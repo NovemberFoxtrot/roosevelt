@@ -2,8 +2,8 @@ package roosevelt
 
 import (
 	"leonard"
-	"winston"
 	"strings"
+	"winston"
 )
 
 var theindex index
@@ -20,6 +20,8 @@ type QueryResult struct {
 }
 
 func Query(query string) []QueryResult {
+	terms := strings.Split(query, ` `)
+
 	results := make([]QueryResult, 0)
 
 	for _, doc := range winston.TheDocuments {
@@ -27,7 +29,15 @@ func Query(query string) []QueryResult {
 			s := doc.Sentences[index]
 			e := doc.Sentences[index+1]
 
-			if strings.Contains(doc.Text[s:e], query) {
+			found := true
+
+			for _, term := range terms {
+				if found = strings.Contains(doc.Text[s:e], term); found != true {
+					break
+				}
+			}
+
+			if found == true {
 				qr := QueryResult{Location: doc.Location, Sentence: doc.Text[s:e]}
 				results = append(results, qr)
 			}
