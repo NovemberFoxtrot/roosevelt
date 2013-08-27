@@ -29,7 +29,7 @@ func Query(query string) []QueryResult {
 			s := doc.Sentences[index]
 			e := doc.Sentences[index+1]
 
-			found := true
+			found := false
 
 			for _, term := range terms {
 				if found = strings.Contains(doc.Text[s:e], term); found != true {
